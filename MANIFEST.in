@@ -1,0 +1,18 @@
+include MANIFEST.in
+include requirements.txt
+include *.json
+include *.md
+include *.py
+include *.txt
+recursive-include inoxision_connect *.css
+recursive-include inoxision_connect *.csv
+recursive-include inoxision_connect *.html
+recursive-include inoxision_connect *.ico
+recursive-include inoxision_connect *.js
+recursive-include inoxision_connect *.json
+recursive-include inoxision_connect *.md
+recursive-include inoxision_connect *.png
+recursive-include inoxision_connect *.py
+recursive-include inoxision_connect *.svg
+recursive-include inoxision_connect *.txt
+recursive-exclude inoxision_connect *.pyc
