@@ -12,14 +12,17 @@ def do_archive(doctype, name):
     settings = frappe.get_single("Inoxision Connect Settings")
     if settings.archive_enabled != 1:
         return False
-
+    if settings.inputpath == "" or settings.inputpattern == "" or settings.outputarchivename == "":
+        frappe.msgprint("Kein Verschlagworten möglich, da nicht alle Settingsfelder befüllt sind")
+        return False
+        
     http_base = settings.http_endpoint
     language = frappe.get_single("System Settings")
 
     html = frappe.get_print(doctype, name, None, None, no_letterhead="no_letterhead")
     filename = "{name}.pdf".format(name=name.replace(" ", "-").replace("/", "-"))
-    f = io.BytesIO(get_pdf(html))
-
+    #f = io.BytesIO(get_pdf(html))
+    f = io.BytesIO(b"")
     session = ftplib.FTP(settings.server, settings.user, settings.password)
 
     if settings.path:
@@ -42,6 +45,31 @@ def do_archive(doctype, name):
         f = frappe.utils.get_bench_path() + "/sites" + frappe.utils.get_site_path()[1:] + a.file_url
         file = open(f, "rb") 
         session.storbinary("STOR " + a.file_name, file)     # send the file
-        file.close()                                    # close file and FTP
-
+        file.close()
+    kopf_zeile = "[Execute]\nInputType=IMAGE\nInputPath=" + str(settings.inputpath)+"\nInputPattern=" + str(settings.inputpattern) + "\nAutoExecute=" + str(settings.autoexecute)+"\nOutputArchiveName=" + str(settings.outputarchivename) +"\n"
+    schluss_zeile = "\nSwapProcess=1\nCreateFullTextChecked=1\nDeleteConfigFile=1"                                    
+    mitte = get_keyword(doctype,name)
+    textfile = kopf_zeile + mitte + schluss_zeile
+    print(textfile)
     session.quit()
+    
+def get_keyword(doctype, name):
+    
+    keyword_list = frappe.get_all("Inoxision Connect Settings Field Assignment",filters = {"doctype_link":doctype},fields= ["destination_field","source_field"])
+    doctype_doc = frappe.get_doc(doctype,name)
+    keyword_zeile = "KeywordValues="
+    for keyword in keyword_list:
+        a = str(getattr(doctype_doc, keyword["source_field"]))
+        if a !="":
+            keyword_zeile += "Belege." + keyword["destination_field"] + "|" + a +"|"
+        else:
+            continue
+    return keyword_zeile
+    
+    
+    
+        
+    #print(keyword_list)
+    # SwapProcess=1
+    # CreateFullTextChecked=1
+    # DeleteConfigFile=1
