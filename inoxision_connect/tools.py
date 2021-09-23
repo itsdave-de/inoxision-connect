@@ -1,3 +1,4 @@
+from os import set_inheritable
 import frappe
 from frappe.utils.pdf import get_pdf
 from frappe.desk.form.load import get_attachments
@@ -8,12 +9,25 @@ import urllib.parse
 
 
 @frappe.whitelist()
+def archive_to_inoxision(doc, method=None):
+    settings = frappe.get_single("Inoxision Connect Settings")
+    if not settings.archive_enabled == 1:
+        return None
+    active_doctypes = frappe.get_all("Inoxision Connect Settings Active Doctype", fields="doctype_link", as_list=True)
+    if (doc.doctype,) not in active_doctypes:
+        return None
+
+    do_archive(doc.doctype, doc.name)
+    print(doc.doctype)
+    print(doc.name)
+
+@frappe.whitelist()
 def do_archive(doctype, name):
     settings = frappe.get_single("Inoxision Connect Settings")
     if settings.archive_enabled != 1:
         return False
     if settings.inputpath == "" or settings.inputpattern == "" or settings.outputarchivename == "":
-        frappe.msgprint("Kein Verschlagworten möglich, da nicht alle Settingsfelder befüllt sind")
+        frappe.msgprint("Keine Archivierung möglich. Inoxision Connect Settings unvollständig.")
         return False
         
     http_base = settings.http_endpoint

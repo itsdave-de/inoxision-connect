@@ -6,12 +6,19 @@
  "engine": "InnoDB",
  "field_order": [
   "archive_enabled",
+  "active_doctypes_section",
+  "doctypes",
   "http_endpoint",
   "ftp_settings_section",
   "server",
   "user",
   "password",
-  "path"
+  "path",
+  "inoxision_file_settings_section",
+  "inputpath",
+  "inputpattern",
+  "outputarchivename",
+  "autoexecute"
  ],
  "fields": [
   {
@@ -49,12 +56,50 @@
    "fieldname": "http_endpoint",
    "fieldtype": "Data",
    "label": "HTTP Endpoint"
+  },
+  {
+   "fieldname": "active_doctypes_section",
+   "fieldtype": "Section Break",
+   "label": "Active DocTypes"
+  },
+  {
+   "description": "Auswahl, f\u00fcr welche DocTypes die Archiv-Funktion aktiv sein soll.\nZus\u00e4tzlich ist f\u00fcr jeden Doctype eine individuelle Feldzuordnung durchzuf\u00fchren.",
+   "fieldname": "doctypes",
+   "fieldtype": "Table MultiSelect",
+   "label": "DocTypes",
+   "options": "Inoxision Connect Settings Active Doctype"
+  },
+  {
+   "fieldname": "inoxision_file_settings_section",
+   "fieldtype": "Section Break",
+   "label": "Inoxision File Settings"
+  },
+  {
+   "fieldname": "inputpath",
+   "fieldtype": "Data",
+   "label": "Input Path"
+  },
+  {
+   "fieldname": "inputpattern",
+   "fieldtype": "Data",
+   "label": "Input Pattern"
+  },
+  {
+   "fieldname": "outputarchivename",
+   "fieldtype": "Data",
+   "label": "Output Archive Name"
+  },
+  {
+   "default": "0",
+   "fieldname": "autoexecute",
+   "fieldtype": "Check",
+   "label": "Auto Execute"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2021-09-22 12:31:56.829393",
+ "modified": "2021-09-23 22:11:56.955945",
  "modified_by": "Administrator",
  "module": "Inoxision Connect",
  "name": "Inoxision Connect Settings",
