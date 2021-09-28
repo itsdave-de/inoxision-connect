@@ -5,10 +5,12 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
+  "basic_settings_section",
   "archive_enabled",
-  "active_doctypes_section",
+  "convert_to_tiff",
+  "resolution",
+  "extensions",
   "doctypes",
-  "http_endpoint",
   "ftp_settings_section",
   "server",
   "user",
@@ -16,7 +18,6 @@
   "path",
   "inoxision_file_settings_section",
   "inputpath",
-  "inputpattern",
   "outputarchivename",
   "autoexecute"
  ],
@@ -53,16 +54,6 @@
    "label": "Archive Enabled"
   },
   {
-   "fieldname": "http_endpoint",
-   "fieldtype": "Data",
-   "label": "HTTP Endpoint"
-  },
-  {
-   "fieldname": "active_doctypes_section",
-   "fieldtype": "Section Break",
-   "label": "Active DocTypes"
-  },
-  {
    "description": "Auswahl, f\u00fcr welche DocTypes die Archiv-Funktion aktiv sein soll.\nZus\u00e4tzlich ist f\u00fcr jeden Doctype eine individuelle Feldzuordnung durchzuf\u00fchren.",
    "fieldname": "doctypes",
    "fieldtype": "Table MultiSelect",
@@ -80,11 +71,6 @@
    "label": "Input Path"
   },
   {
-   "fieldname": "inputpattern",
-   "fieldtype": "Data",
-   "label": "Input Pattern"
-  },
-  {
    "fieldname": "outputarchivename",
    "fieldtype": "Data",
    "label": "Output Archive Name"
@@ -94,12 +80,35 @@
    "fieldname": "autoexecute",
    "fieldtype": "Check",
    "label": "Auto Execute"
+  },
+  {
+   "default": "0",
+   "fieldname": "convert_to_tiff",
+   "fieldtype": "Check",
+   "label": "Convert to TIFF"
+  },
+  {
+   "fieldname": "basic_settings_section",
+   "fieldtype": "Section Break",
+   "label": "Basic Settings"
+  },
+  {
+   "description": "Komma-Separierte Liste an Datei-Erweiterungen, die Archiviert werden sollen. z.B.: .pdf,.jpg",
+   "fieldname": "extensions",
+   "fieldtype": "Data",
+   "label": "Extensions"
+  },
+  {
+   "default": "200",
+   "fieldname": "resolution",
+   "fieldtype": "Int",
+   "label": "Resolution"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2021-09-23 22:11:56.955945",
+ "modified": "2021-09-24 07:13:45.969518",
  "modified_by": "Administrator",
  "module": "Inoxision Connect",
  "name": "Inoxision Connect Settings",
