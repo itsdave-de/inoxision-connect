@@ -79,7 +79,11 @@ def get_inoxision_control_file_content(doctype, name, filename, settings):
     doctype_doc = frappe.get_doc(doctype,name)
     keyword_zeile = "KeywordValues="
     for keyword in keyword_list:
-        a = str(getattr(doctype_doc, keyword["source_field"]))
+        if str(keyword["source_field"]).startswith("value:"):
+            a = str(keyword["source_field"]).replace("value:","")
+        else:
+            a = str(getattr(doctype_doc, keyword["source_field"]))
+        
         if a !="":
             keyword_zeile += "Belege." + keyword["destination_field"] + "|" + a +"|"
         else:
