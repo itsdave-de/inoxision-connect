@@ -40,7 +40,9 @@ def do_archive(doctype, name):
     f_pdf = io.BytesIO(get_pdf(html))
     session = ftplib.FTP(settings.server, settings.user, settings.password)
 
-
+    # Variable f initialisieren - wird für PDF oder TIFF verwendet
+    f = f_pdf  # Standard: PDF verwenden
+    
     if settings.convert_to_tiff == 1:
         converted_return = convert_to_tif(f_pdf, filename, settings)
         f = converted_return[0]
@@ -62,8 +64,8 @@ def do_archive(doctype, name):
         file = open(f, "rb") 
         session.storbinary("STOR " + a.file_name, file)     # send the file
         print(a.filename)
-        control_file = get_inoxision_control_file_content(doctype, name, a.filename, settings)
-        session.storbinary("STOR " + a.file_name + ".txt", file)
+        control_file = get_inoxision_control_file_content(doctype, name, a.file_name, settings)
+        session.storbinary("STOR " + a.file_name + ".txt", control_file)
 
         file.close()
     
@@ -90,7 +92,7 @@ def get_inoxision_control_file_content(doctype, name, filename, settings):
             continue
 
     control_file_content = kopf_zeile + keyword_zeile + schluss_zeile
-    bytes_io = io.BytesIO(control_file_content.encode())
+    bytes_io = io.BytesIO(control_file_content.encode("windows-1252"))
     return bytes_io
     
 def convert_to_tif(input_file, filename, settings):
@@ -98,10 +100,20 @@ def convert_to_tif(input_file, filename, settings):
         resolution = settings.resolution
     else:
         resolution = 200
+    
+    # Farbtiefe aus Settings lesen, Standard: 8-bit
+    bit_depth = getattr(settings, 'bit_depth', 8)
+    if bit_depth not in [8, 16, 32, 64]:
+        bit_depth = 8  # Fallback auf 8-bit
+    
     output_file = io.BytesIO()
     filename = filename.replace(".pdf",".tif")
+    
     with Image(file=input_file, resolution=resolution) as original:
-        with original.convert("tif") as converted:
+        with original.convert("tiff") as converted:
+            # Farbtiefe explizit setzen
+            converted.depth = bit_depth
             converted.save(file=output_file)
+    
     output_file.seek(0)
     return (output_file, filename)

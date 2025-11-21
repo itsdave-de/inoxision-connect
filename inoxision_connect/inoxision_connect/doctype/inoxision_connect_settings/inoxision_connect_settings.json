@@ -9,6 +9,7 @@
   "archive_enabled",
   "convert_to_tiff",
   "resolution",
+  "bit_depth",
   "extensions",
   "doctypes",
   "ftp_settings_section",
@@ -103,6 +104,14 @@
    "fieldname": "resolution",
    "fieldtype": "Int",
    "label": "Resolution"
+  },
+  {
+   "default": "8",
+   "fieldname": "bit_depth",
+   "fieldtype": "Select",
+   "label": "TIFF Bit Depth",
+   "options": "8\n16\n32\n64",
+   "description": "Farbtiefe für TIFF-Konvertierung (8-bit = Standard, 16/32/64-bit = höhere Qualität aber größere Dateien)"
   }
  ],
  "index_web_pages_for_search": 1,
